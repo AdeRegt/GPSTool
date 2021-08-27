@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <title>GPS Tool</title>
+        <style>
+            .ack{
+                text-align: center;
+                font-family: "Lucida Console", "Courier New", monospace;
+                font-size: 60;
+            }
+
+            button{
+                width:45%;
+                height:200px;
+            }
+        </style>
+        <link rel="manifest" href="/manifest.webmanifest">
+        <script>
+            document.addEventListener("DOMContentLoaded",function(){
+                if('serviceWorker' in navigator){
+                    navigator.serviceWorker.register('/sw.js');
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <h1 class="ack" id="geoOK">GPS</h1><br/>
+        <h2 class="ack" id="gpsX">druk op auto of zoek</h2><br/>
+        <div class="ack" id="gpsZ"></div><br/>
+        <div class="ack">
+            <button class="ack" id="gpsz">Eenmalig</button>
+            <button class="ack" id="gpsa">Start auto</button>
+        </div>
+        <script>
+
+
+
+            const options = {
+                enableHighAccuracy: true,
+                maximumAge: 30000
+            };
+
+            function fsx(evt){
+                geoOK.innerHTML = "GPS OK";
+                gpsX.innerHTML = "" + evt.coords.latitude + ", " + evt.coords.longitude;
+                var datum = new Date();
+                gpsZ.innerHTML = datum.getHours() + ":" + datum.getMinutes() ;
+            };
+
+            function erx(evt){
+                    geoOK.innerHTML = "GPS Error";
+            }
+
+            function getpos(evt){
+                geoOK.innerHTML = "Zoeken...";
+                gpsX.innerHTML = "";
+                navigator.geolocation.getCurrentPosition(fsx,erx,options);
+            }
+
+            gpsz.onclick = getpos;
+            gpsa.onclick = function(){
+                if(gpsa.dinges){
+                    gpsa.innerHTML = "Start auto";
+                    gpsa.dinges = false;
+                    navigator.geolocation.clearWatch(gpsa.wid);
+                }else{
+                    geoOK.innerHTML = "GPS beschikbaar";
+                    gpsX.innerHTML = "";
+                    gpsa.innerHTML = "Stop auto";
+                    gpsa.dinges = true;
+                    gpsa.wid =navigator.geolocation.watchPosition(fsx,erx,options);
+                }
+            };
+
+            if(!navigator.geolocation) {
+                geoOK.innerHTML = "GPS niet beschikbaar";
+            }
+        </script>
+    </body>
+</html>

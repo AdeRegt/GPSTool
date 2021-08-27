@@ -1,0 +1,16 @@
+{
+    "background_color": "skyblue",
+    "description": "GPS tracker",
+    "display": "standalone",
+    "icons": [
+        {
+            "src": "favicon.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        }
+    ],
+    "name": "SandersGPS",
+    "short_name": "SandersGPS",
+    "start_url": "/index.html",
+    "theme_color": "skyblue"
+}
